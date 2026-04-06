@@ -18,7 +18,7 @@ nav.scrolled{padding:1rem 3rem}
 .nav-links a:hover{color:var(--fg)}
 .menu-toggle{display:none;background:none;border:none;cursor:pointer}
 .menu-toggle span{display:block;width:22px;height:1.5px;background:var(--fg);margin:5px 0;transition:.3s}
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:8rem 2rem 4rem;position:relative;overflow:hidden}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding: calc(8rem + 35px) 2rem 4rem;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 20% 30%,rgba(184,175,166,.15),transparent),radial-gradient(ellipse 50% 40% at 80% 70%,rgba(232,226,218,.3),transparent);pointer-events:none}
 .hero-badges{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;margin-bottom:2rem;opacity:0;animation:fadeUp .8s .15s forwards}
 .hero-badge{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;padding:.4rem 1rem;border:1px solid var(--accent);border-radius:100px;color:var(--muted)}
@@ -137,6 +137,91 @@ section{padding:4rem 1.5rem}.about{grid-template-columns:1fr;gap:2rem}.highlight
 .reviews-stats{flex-direction:column;text-align:center;gap:.8rem}.reviews-grid{grid-template-columns:1fr}
 .lightbox-content{min-width:85vw}.amenities-inner{justify-content:flex-start}
 }
+.busy-section {
+  padding: 5rem 3rem;
+  text-align: center;
+}
+
+.gauge-wrapper {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 2rem auto;
+}
+
+.gauge {
+  transform: rotate(-90deg);
+}
+
+.gauge-bg {
+  fill: none;
+  stroke: #e8e2da;
+  stroke-width: 10;
+}
+
+.gauge-fill {
+  fill: none;
+  stroke: #2ecc71;
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 326;
+  stroke-dashoffset: 326;
+  transition: 0.8s ease;
+}
+
+.gauge-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.high-glow {
+  animation: pulseGlow 1.2s infinite;
+}
+
+@keyframes pulseGlow {
+  0% { filter: drop-shadow(0 0 0 rgba(231,76,60,0.3)); }
+  50% { filter: drop-shadow(0 0 18px rgba(231,76,60,0.9)); }
+  100% { filter: drop-shadow(0 0 0 rgba(231,76,60,0.3)); }
+}
+.status-bar {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.4rem 0;
+  background: rgba(246,244,240,0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  color: var(--muted);
+  z-index: 99;
+}
+
+/* dot indicator */
+.status-open::before,
+.status-closed::before {
+  content: "● ";
+  margin-right: 4px;
+}
+
+.status-open {
+  color: #6f8f7a;
+}
+.status-open::before {
+  color: #6f8f7a;
+}
+
+.status-closed {
+  color: #b07a7a;
+}
+.status-closed::before {
+  color: #b07a7a;
+}
 </style>
 </head>
 <body>
@@ -152,6 +237,9 @@ section{padding:4rem 1.5rem}.about{grid-template-columns:1fr;gap:2rem}.highlight
   </ul>
   <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></button>
 </nav>
+<div id="statusBar" class="status-bar">
+  <span id="statusText">Checking hours...</span>
+</div>
 
 <section class="hero">
   <div class="hero-badges">
@@ -187,6 +275,25 @@ section{padding:4rem 1.5rem}.about{grid-template-columns:1fr;gap:2rem}.highlight
         <div><strong>A</strong>Health Score</div>
         <div><strong>♿</strong>Accessible</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="busy-section reveal" id="busy">
+  <div class="section-center">
+    <span class="section-label">Live Insight</span>
+    <h2 class="section-title">Current Crowd Level</h2>
+  </div>
+
+  <div class="gauge-wrapper">
+    <svg class="gauge" viewBox="0 0 120 120">
+      <circle class="gauge-bg" cx="60" cy="60" r="52"></circle>
+      <circle class="gauge-fill" cx="60" cy="60" r="52" id="gaugeFill"></circle>
+    </svg>
+
+    <div class="gauge-center">
+      <div id="busyPercent">0%</div>
+      <div id="busyLabel">Loading</div>
     </div>
   </div>
 </section>
@@ -387,6 +494,165 @@ const icons=['&#9678;','&#9749;','&#10043;','&#8962;','&#9998;'];
 function openLightbox(i){document.getElementById('lightboxContent').innerHTML='<div class="gallery-placeholder"><span class="gp-icon" style="font-size:3rem">'+icons[i]+'</span><span>'+labels[i]+'</span><span style="margin-top:.5rem;font-size:.65rem;opacity:.5">Replace with your photo</span></div>';document.getElementById('lightbox').classList.add('open')}
 function closeLightbox(){document.getElementById('lightbox').classList.remove('open')}
 document.getElementById('lightbox').addEventListener('click',e=>{if(e.target.id==='lightbox')closeLightbox()});
+function getStoreStatus() {
+  const now = new Date();
+
+  const day = now.getDay(); // 0 = Sunday
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+  // Store hours in minutes
+  const schedule = {
+    0: { open: 8 * 60, close: 23 * 60 }, // Sun
+    1: { open: 8 * 60, close: 23 * 60 }, // Mon
+    2: { open: 8 * 60, close: 23 * 60 }, // Tue
+    3: { open: 8 * 60, close: 20 * 60 }, // Wed
+    4: { open: 9 * 60, close: 21 * 60 }, // Thu
+    5: { open: 8 * 60, close: 23 * 60 }, // Fri
+    6: { open: 8 * 60, close: 23 * 60 }  // Sat
+  };
+
+  const today = schedule[day];
+  const statusText = document.getElementById("statusText");
+
+  function formatTime(minutes) {
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    const ampm = h >= 12 ? "PM" : "AM";
+    const hour = h % 12 || 12;
+    return `${hour}:${m.toString().padStart(2, "0")} ${ampm}`;
+  }
+
+  if (currentMinutes >= today.open && currentMinutes < today.close) {
+    statusText.textContent = `Open now · closes at ${formatTime(today.close)}`;
+    statusText.className = "status-open";
+  } else {
+    statusText.textContent = `Closed · opens at ${formatTime(today.open)}`;
+    statusText.className = "status-closed";
+  }
+}
+
+// Run on load
+getStoreStatus();
+
+// Optional: update every minute
+setInterval(getStoreStatus, 60000);
+
+const WEATHER_API_KEY = "YOUR_OPENWEATHER_KEY";
+const GOOGLE_API_KEY = "YOUR_GOOGLE_KEY";
+
+let weatherFactor = 0;
+let trafficFactor = 0;
+
+async function fetchWeather() {
+  try {
+    const res = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=Flushing&appid=${WEATHER_API_KEY}&units=imperial`
+    );
+
+    const data = await res.json();
+
+    const condition = data.weather[0].main.toLowerCase();
+    const temp = data.main.temp;
+
+    weatherFactor = 0;
+
+    if (condition.includes("rain") || condition.includes("snow")) {
+      weatherFactor += 25;
+    }
+
+    if (temp > 85) weatherFactor -= 10;
+    if (temp < 40) weatherFactor += 10;
+
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+async function fetchFootTraffic() {
+  try {
+    const res = await fetch(
+      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.7580,-73.8200&radius=800&type=cafe&key=${GOOGLE_API_KEY}`
+    );
+
+    const data = await res.json();
+    const results = data.results || [];
+
+    let total = 0;
+    results.forEach(p => {
+      total += p.user_ratings_total || 0;
+    });
+
+    trafficFactor = Math.min(30, total / 2000);
+
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function estimateCrowdAI() {
+  const now = new Date();
+  const hour = now.getHours();
+  const day = now.getDay();
+
+  let base = 15;
+
+  // rush hours
+  if (hour >= 12 && hour <= 14) base += 35;
+  if (hour >= 17 && hour <= 20) base += 45;
+  if (hour >= 8 && hour <= 10) base += 10;
+
+  // weekend boost
+  if (day === 0 || day === 6) base += 15;
+
+  base += weatherFactor;
+  base += trafficFactor;
+
+  base += Math.random() * 10;
+
+  return Math.min(100, Math.max(0, Math.floor(base)));
+}
+
+const circle = document.getElementById("gaugeFill");
+const percentText = document.getElementById("busyPercent");
+const label = document.getElementById("busyLabel");
+
+const radius = 52;
+const circumference = 2 * Math.PI * radius;
+
+function setBusy(level) {
+  const offset = circumference - (level / 100) * circumference;
+
+  circle.style.strokeDasharray = circumference;
+  circle.style.strokeDashoffset = offset;
+
+  percentText.textContent = `${level}%`;
+
+  let text = "Quiet";
+  circle.classList.remove("high-glow");
+
+  if (level > 75) {
+    text = "Very Busy";
+    circle.classList.add("high-glow");
+  } else if (level > 50) {
+    text = "Moderate";
+  } else if (level > 25) {
+    text = "Light";
+  }
+
+  label.textContent = text;
+}
+
+async function refreshAI() {
+  await fetchWeather();
+  await fetchFootTraffic();
+
+  const predicted = estimateCrowdAI();
+  setBusy(predicted);
+}
+
+refreshAI();
+setInterval(refreshAI, 600000); // every 10 min
+
 </script>
 </body>
 </html>
