@@ -4,229 +4,325 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GREY Cafe — Flushing, NY</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="description" content="Artisanal coffee, specialty teas & handcrafted bites. A women-owned neighborhood cafe in Flushing, Queens.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/logo-mark.svg">
 <style>
-:root{--bg:#F6F4F0;--fg:#2C2926;--muted:#8A8480;--accent:#B8AFA6;--warm:#E8E2DA;--cream:#FAF8F5;--taupe:#D4CCC4;--gold:#C9A96E}
+:root{
+  --bg:#F3EFE8;
+  --bg-2:#EDE7DD;
+  --fg:#2A2724;
+  --fg-soft:#463F38;
+  --muted:#8A8075;
+  --accent:#B8A99A;
+  --warm:#E5DDD0;
+  --cream:#F9F5EE;
+  --taupe:#CFC3B3;
+  --gold:#C6A770;
+  --ink:#1A1816;
+  --line:rgba(42,39,36,.08);
+}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--fg);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 3rem;background:rgba(246,244,240,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,0.04);transition:padding .3s}
-nav.scrolled{padding:1rem 3rem}
-.logo{font-family:'DM Serif Display',serif;font-size:1.35rem;letter-spacing:.15em;color:var(--fg);text-decoration:none}
-.nav-links{display:flex;gap:2.5rem;list-style:none}
-.nav-links a{text-decoration:none;color:var(--muted);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;font-weight:400;transition:color .3s}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--fg);font-weight:300;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;position:relative}
+
+/* Grain overlay */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.5;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.17 0 0 0 0 0.15 0 0 0 0 0.14 0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* Cursor dot */
+.cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--fg);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .25s,height .25s,background .25s,opacity .3s;mix-blend-mode:difference;opacity:0}
+.cursor-ring{position:fixed;top:0;left:0;width:34px;height:34px;border:1px solid var(--fg);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,opacity .3s;mix-blend-mode:difference;opacity:0}
+body.cursor-ready .cursor-dot,body.cursor-ready .cursor-ring{opacity:.9}
+@media(hover:none){.cursor-dot,.cursor-ring{display:none!important}}
+
+/* Navigation */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.4rem 2.5rem;background:rgba(243,239,232,.72);backdrop-filter:blur(20px) saturate(1.1);-webkit-backdrop-filter:blur(20px) saturate(1.1);border-bottom:1px solid transparent;transition:padding .35s,background .35s,border-color .35s}
+nav.scrolled{padding:.9rem 2.5rem;border-bottom-color:var(--line)}
+.logo{display:flex;flex-direction:column;align-items:flex-start;gap:.05rem;text-decoration:none;color:var(--fg);line-height:1}
+.logo-word{font-family:'Inter',sans-serif;font-size:1.5rem;letter-spacing:.22em;font-weight:300;line-height:1}
+.logo-sub{font-family:'Inter',sans-serif;font-size:.55rem;letter-spacing:.38em;font-weight:300;color:var(--muted);margin-top:.2rem;padding-left:.1rem}
+.nav-links{display:flex;gap:2.2rem;list-style:none}
+.nav-links a{text-decoration:none;color:var(--fg-soft);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--fg);transform:scaleX(0);transform-origin:left;transition:transform .35s}
 .nav-links a:hover{color:var(--fg)}
-.menu-toggle{display:none;background:none;border:none;cursor:pointer}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-cta{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;padding:.6rem 1.2rem;background:var(--fg);color:var(--bg);border-radius:100px;text-decoration:none;transition:transform .3s,background .3s}
+.nav-cta:hover{transform:translateY(-2px)}
+.menu-toggle{display:none;background:none;border:none;cursor:pointer;padding:.3rem}
 .menu-toggle span{display:block;width:22px;height:1.5px;background:var(--fg);margin:5px 0;transition:.3s}
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding: calc(8rem + 35px) 2rem 4rem;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 20% 30%,rgba(184,175,166,.15),transparent),radial-gradient(ellipse 50% 40% at 80% 70%,rgba(232,226,218,.3),transparent);pointer-events:none}
-.hero-badges{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;margin-bottom:2rem;opacity:0;animation:fadeUp .8s .15s forwards}
-.hero-badge{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;padding:.4rem 1rem;border:1px solid var(--accent);border-radius:100px;color:var(--muted)}
-.hero-badge.gold{border-color:var(--gold);color:var(--gold)}
-.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(3rem,8vw,7rem);font-weight:400;line-height:1.05;letter-spacing:-.02em;opacity:0;animation:fadeUp .8s .3s forwards}
-.hero-sub{margin-top:1.5rem;font-size:1.05rem;color:var(--muted);max-width:420px;opacity:0;animation:fadeUp .8s .5s forwards}
-.hero-cta{margin-top:3rem;display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;opacity:0;animation:fadeUp .8s .7s forwards}
-.btn{display:inline-block;padding:.9rem 2.2rem;font-family:'DM Sans',sans-serif;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border-radius:100px;transition:all .35s;cursor:pointer;font-weight:400}
-.btn-primary{background:var(--fg);color:var(--bg);border:1.5px solid var(--fg)}
-.btn-primary:hover{background:transparent;color:var(--fg)}
-.btn-outline{background:transparent;color:var(--fg);border:1.5px solid var(--accent)}
-.btn-outline:hover{border-color:var(--fg)}
-.scroll-hint{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);opacity:0;animation:fadeUp .8s 1s forwards}
-.scroll-hint span{display:block;width:1px;height:40px;background:var(--accent);animation:scrollPulse 2s infinite}
-section{padding:6rem 3rem}
-.section-label{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
-.section-title{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;margin-bottom:1.5rem}
-.section-center{text-align:center}
-.about{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1100px;margin:0 auto}
-.about-img{width:100%;aspect-ratio:4/5;background:linear-gradient(145deg,var(--warm),var(--taupe));border-radius:12px;position:relative;overflow:hidden}
-.about-img::after{content:'☕';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:4rem;opacity:.2}
-.about-text p{color:var(--muted);margin-bottom:1rem;font-size:.95rem}
-.about-badges{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.5rem}
-.about-tag{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;padding:.35rem .9rem;background:var(--cream);border-radius:100px;color:var(--muted)}
-.about-stats{display:flex;gap:2rem;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--warm)}
-.about-stats div{font-size:.78rem;letter-spacing:.05em}
-.about-stats strong{display:block;font-family:'DM Serif Display',serif;font-size:1.3rem;font-weight:400;margin-bottom:.3rem}
-.gallery{max-width:1100px;margin:0 auto}
-.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto auto;gap:.8rem;margin-top:3rem}
-.gallery-item{border-radius:10px;overflow:hidden;position:relative;cursor:pointer;transition:transform .4s,box-shadow .4s}
-.gallery-item:hover{transform:scale(1.02);box-shadow:0 12px 40px rgba(0,0,0,.08)}
-.gallery-placeholder{width:100%;height:100%;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(44,41,38,.25);gap:.5rem}
-.gallery-placeholder .gp-icon{font-size:2rem;opacity:.3}
-.gallery-item:nth-child(1){grid-column:span 2;grid-row:span 2;background:linear-gradient(135deg,#D4CCC4,#C5BBB0)}
-.gallery-item:nth-child(2){background:linear-gradient(135deg,#E8E2DA,#D4CCC4)}
-.gallery-item:nth-child(3){background:linear-gradient(135deg,#C5BBB0,#B8AFA6)}
-.gallery-item:nth-child(4){background:linear-gradient(135deg,#E8E2DA,#D9D2C9)}
-.gallery-item:nth-child(5){background:linear-gradient(135deg,#D9D2C9,#C5BBB0)}
-.lightbox{display:none;position:fixed;inset:0;background:rgba(44,41,38,.92);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
-.lightbox.open{display:flex}
-.lightbox-close{position:absolute;top:1.5rem;right:2rem;background:none;border:none;color:var(--bg);font-size:2rem;cursor:pointer;opacity:.7;transition:opacity .3s}
-.lightbox-close:hover{opacity:1}
-.lightbox-content{max-width:80vw;max-height:80vh;border-radius:12px;overflow:hidden;background:var(--warm);display:flex;align-items:center;justify-content:center;min-width:400px;min-height:300px}
-.amenities{background:var(--fg);color:var(--bg);padding:3rem}
-.amenities-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:center;gap:2rem 3rem}
-.amenity{display:flex;align-items:center;gap:.6rem;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
-.amenity-dot{width:5px;height:5px;border-radius:50%;background:var(--gold)}
-.highlights{max-width:1100px;margin:0 auto}
-.highlights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem}
-.highlight-card{background:var(--cream);padding:2.5rem 2rem;border-radius:12px;transition:transform .3s}
-.highlight-card:hover{transform:translateY(-4px)}
-.highlight-icon{font-size:1.8rem;margin-bottom:1.2rem}
-.highlight-card h4{font-family:'DM Serif Display',serif;font-size:1.15rem;font-weight:400;margin-bottom:.6rem}
-.highlight-card p{font-size:.85rem;color:var(--muted)}
-.menu-section{background:var(--cream)}
-.menu-inner{max-width:1100px;margin:0 auto}
-.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:3rem;margin-top:3rem}
-.menu-category h3{font-family:'DM Serif Display',serif;font-size:1.3rem;font-weight:400;margin-bottom:1.5rem;padding-bottom:.8rem;border-bottom:1px solid var(--warm)}
-.menu-item{display:flex;justify-content:space-between;align-items:baseline;padding:.7rem 0}
-.menu-item-name{font-size:.9rem;font-weight:400}
-.menu-item-desc{font-size:.78rem;color:var(--muted);margin-top:.2rem}
-.menu-item-price{font-size:.85rem;color:var(--muted);white-space:nowrap;margin-left:1rem}
+
+/* Status bar */
+.status-bar{position:fixed;top:70px;left:0;right:0;text-align:center;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;padding:.45rem 0;background:rgba(243,239,232,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);color:var(--muted);z-index:99;font-weight:500}
+.status-open::before,.status-closed::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:8px;vertical-align:middle}
+.status-open{color:#5d8a6e}
+.status-open::before{background:#5d8a6e;box-shadow:0 0 0 0 rgba(93,138,110,.6);animation:livePulse 2s infinite}
+.status-closed{color:#a86f6f}
+.status-closed::before{background:#a86f6f}
+@keyframes livePulse{0%{box-shadow:0 0 0 0 rgba(93,138,110,.6)}70%{box-shadow:0 0 0 8px rgba(93,138,110,0)}100%{box-shadow:0 0 0 0 rgba(93,138,110,0)}}
+
+/* Hero */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:calc(8rem + 30px) 2rem 5rem;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+.hero-bg-img{position:absolute;inset:-5% -5% -5% -5%;background-image:url('https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=2000&q=80');background-size:cover;background-position:center;filter:brightness(.55) saturate(.85) contrast(1.05);will-change:transform}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,24,22,.35) 0%,rgba(26,24,22,.15) 40%,rgba(243,239,232,.4) 80%,var(--bg) 100%),radial-gradient(ellipse 60% 40% at 50% 30%,rgba(198,167,112,.12),transparent)}
+.hero-content{position:relative;z-index:2;max-width:900px}
+.hero-badges{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;margin-bottom:2rem;opacity:0;animation:fadeUp .8s .15s forwards}
+.hero-badge{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;padding:.5rem 1.1rem;border:1px solid rgba(246,244,240,.35);border-radius:100px;color:rgba(246,244,240,.85);backdrop-filter:blur(6px);background:rgba(26,24,22,.15);font-weight:500}
+.hero-badge.gold{border-color:rgba(198,167,112,.7);color:var(--gold)}
+.hero-eyebrow{font-size:.75rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(246,244,240,.6);margin-bottom:1.5rem;opacity:0;animation:fadeUp .8s .1s forwards;font-weight:500}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(3.2rem,10vw,8.5rem);font-weight:300;line-height:.95;letter-spacing:-.035em;color:var(--cream);opacity:0;animation:fadeUp 1s .35s forwards}
+.hero h1 em{font-style:italic;font-weight:300;color:var(--gold);display:inline-block}
+.hero-sub{margin-top:1.8rem;font-size:1.05rem;color:rgba(246,244,240,.75);max-width:480px;margin-left:auto;margin-right:auto;opacity:0;animation:fadeUp .8s .55s forwards;font-weight:300}
+.hero-cta{margin-top:2.8rem;display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;opacity:0;animation:fadeUp .8s .75s forwards}
+.scroll-hint{position:absolute;bottom:2.8rem;left:50%;transform:translateX(-50%);opacity:0;animation:fadeUp .8s 1.1s forwards;z-index:2;display:flex;flex-direction:column;align-items:center;gap:.6rem;color:rgba(246,244,240,.6)}
+.scroll-hint .scroll-label{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase}
+.scroll-hint .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(246,244,240,.6),transparent);position:relative;overflow:hidden}
+.scroll-hint .scroll-line::after{content:'';position:absolute;top:-40px;left:0;width:100%;height:40px;background:linear-gradient(to bottom,transparent,var(--gold));animation:scrollTrail 2.2s infinite}
+@keyframes scrollTrail{0%{top:-40px}100%{top:40px}}
+
+/* Steam */
+.steam{position:absolute;bottom:15%;left:12%;width:80px;height:140px;opacity:.35;z-index:1;pointer-events:none}
+.steam.right{left:auto;right:12%;bottom:22%;animation-delay:-2s}
+.steam path{stroke:var(--cream);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-dasharray:6 10;animation:steamFlow 6s linear infinite}
+.steam path:nth-child(2){animation-delay:-2s;opacity:.6}
+.steam path:nth-child(3){animation-delay:-4s;opacity:.4}
+@keyframes steamFlow{0%{stroke-dashoffset:0;transform:translateY(0)}100%{stroke-dashoffset:-80;transform:translateY(-20px)}}
+
+/* Floating beans */
+.beans{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.bean{position:absolute;width:10px;height:15px;background:var(--gold);border-radius:50%;opacity:.15;animation:beanFloat linear infinite}
+.bean::after{content:'';position:absolute;top:0;left:50%;width:1px;height:100%;background:rgba(26,24,22,.3);transform:translateX(-50%)}
+@keyframes beanFloat{0%{transform:translateY(100vh) rotate(0deg)}100%{transform:translateY(-10vh) rotate(360deg)}}
+
+/* Marquee */
+.marquee{background:var(--ink);color:var(--cream);padding:1.1rem 0;overflow:hidden;position:relative;border-top:1px solid rgba(246,244,240,.1);border-bottom:1px solid rgba(246,244,240,.1)}
+.marquee-track{display:flex;gap:3rem;animation:marqueeScroll 42s linear infinite;width:max-content}
+.marquee span{font-family:'Fraunces',serif;font-size:1.4rem;letter-spacing:.08em;white-space:nowrap;display:flex;align-items:center;gap:3rem;font-weight:300}
+.marquee span::after{content:'✦';color:var(--gold);margin-left:3rem;font-size:.9rem}
+.marquee span em{font-style:italic;color:var(--gold)}
+@keyframes marqueeScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* Sections */
+section{padding:7rem 3rem;position:relative}
+.section-label{font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;font-weight:500;display:inline-flex;align-items:center;gap:.6rem}
+.section-label::before{content:'';width:24px;height:1px;background:var(--accent)}
+.section-title{font-family:'Fraunces',serif;font-size:clamp(2.2rem,5vw,3.6rem);font-weight:300;margin-bottom:1.5rem;letter-spacing:-.02em;line-height:1.05}
+.section-title em{font-style:italic;color:var(--gold);font-weight:300}
+.section-center{text-align:center;max-width:620px;margin:0 auto 1rem}
+.section-center .section-label{justify-content:center}
+.section-center .section-label::before{display:none}
+.section-center .section-label::after{content:'';width:24px;height:1px;background:var(--accent);display:inline-block;margin-left:.6rem}
+.section-center .section-label::before{content:'';width:24px;height:1px;background:var(--accent);display:inline-block;margin-right:.6rem}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:.6rem;padding:.95rem 2rem;font-family:'Inter',sans-serif;font-size:.76rem;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;border-radius:100px;transition:all .4s cubic-bezier(.4,0,.2,1);cursor:pointer;font-weight:500;border:1.5px solid transparent;position:relative;overflow:hidden}
+.btn-primary{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.btn-primary:hover{background:var(--gold);color:var(--ink);border-color:var(--gold);transform:translateY(-2px)}
+.btn-outline{background:transparent;color:var(--cream);border-color:rgba(246,244,240,.4)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.btn-dark{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.btn-dark:hover{background:transparent;color:var(--ink);transform:translateY(-2px)}
+.btn svg{width:14px;height:14px;transition:transform .35s}
+.btn:hover svg{transform:translateX(3px)}
+
+/* About */
+.about{display:grid;grid-template-columns:.95fr 1.05fr;gap:5rem;align-items:center;max-width:1200px;margin:0 auto}
+.about-img-wrap{position:relative}
+.about-img{width:100%;aspect-ratio:4/5;border-radius:4px;overflow:hidden;position:relative;background:#cfc3b3 url('https://images.unsplash.com/photo-1559925393-8be0ec4767c8?auto=format&fit=crop&w=900&q=80') center/cover}
+.about-img-small{position:absolute;bottom:-40px;right:-30px;width:45%;aspect-ratio:1;border-radius:4px;overflow:hidden;background:#cfc3b3 url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80') center/cover;border:8px solid var(--bg);box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.about-quote{position:absolute;top:2rem;left:-2.5rem;background:var(--ink);color:var(--cream);padding:1rem 1.4rem;font-family:'Fraunces',serif;font-style:italic;font-size:.95rem;max-width:200px;line-height:1.4;border-radius:2px;z-index:2;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.about-quote::before{content:'"';position:absolute;top:-10px;left:10px;font-size:3rem;color:var(--gold);line-height:1;font-family:'Fraunces',serif}
+.about-text p{color:var(--fg-soft);margin-bottom:1.2rem;font-size:1rem;line-height:1.8}
+.about-badges{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.8rem}
+.about-tag{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;padding:.5rem 1rem;background:var(--warm);border-radius:100px;color:var(--fg-soft);font-weight:500}
+.about-stats{display:flex;gap:2.5rem;margin-top:2.5rem;padding-top:2.5rem;border-top:1px solid var(--line)}
+.about-stats div{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.about-stats strong{display:block;font-family:'Fraunces',serif;font-size:2rem;font-weight:400;margin-bottom:.3rem;color:var(--fg);letter-spacing:-.02em}
+
+/* Busy gauge */
+.busy-section{padding:5rem 3rem;text-align:center;background:var(--bg-2);position:relative;overflow:hidden}
+.busy-section::before,.busy-section::after{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,var(--warm),transparent);opacity:.4;z-index:0}
+.busy-section::before{top:-100px;left:-100px}
+.busy-section::after{bottom:-100px;right:-100px}
+.busy-section>*{position:relative;z-index:1}
+.gauge-wrapper{position:relative;width:180px;height:180px;margin:2.5rem auto 1rem}
+.gauge{transform:rotate(-90deg)}
+.gauge-bg{fill:none;stroke:rgba(42,39,36,.08);stroke-width:8}
+.gauge-fill{fill:none;stroke:#5d8a6e;stroke-width:8;stroke-linecap:round;stroke-dasharray:326;stroke-dashoffset:326;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1),stroke .6s}
+.gauge-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+#busyPercent{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:400;color:var(--fg);letter-spacing:-.02em}
+#busyLabel{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:.2rem;font-weight:500}
+.high-glow{animation:pulseGlow 1.6s infinite;stroke:#b8785a!important}
+@keyframes pulseGlow{0%,100%{filter:drop-shadow(0 0 0 rgba(184,120,90,.3))}50%{filter:drop-shadow(0 0 14px rgba(184,120,90,.7))}}
+
+/* Gallery */
+.gallery{max-width:1300px;margin:0 auto}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:220px;gap:1rem;margin-top:3.5rem}
+.gallery-item{border-radius:4px;overflow:hidden;position:relative;cursor:pointer;background:var(--taupe)}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.25,.46,.45,.94),filter .5s;display:block}
+.gallery-item:hover img{transform:scale(1.06);filter:brightness(.75)}
+.gallery-item::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(26,24,22,.7));opacity:0;transition:opacity .4s;pointer-events:none}
+.gallery-item:hover::after{opacity:1}
+.gallery-caption{position:absolute;bottom:1.2rem;left:1.2rem;right:1.2rem;color:var(--cream);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;font-weight:500;opacity:0;transform:translateY(10px);transition:opacity .4s,transform .4s;z-index:2}
+.gallery-item:hover .gallery-caption{opacity:1;transform:translateY(0)}
+.gallery-item:nth-child(1){grid-column:span 2;grid-row:span 2}
+.gallery-item:nth-child(6){grid-column:span 2}
+
+/* Instagram */
+.insta-section{background:var(--cream);padding:6rem 3rem}
+.insta-inner{max-width:1300px;margin:0 auto}
+.insta-header{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:2rem;margin-bottom:3rem}
+.insta-handle{font-family:'Fraunces',serif;font-style:italic;color:var(--gold);font-size:1.15rem}
+.insta-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:.6rem}
+.insta-tile{aspect-ratio:1;overflow:hidden;position:relative;background:var(--taupe);border-radius:2px}
+.insta-tile img{width:100%;height:100%;object-fit:cover;transition:transform .7s}
+.insta-tile::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(26,24,22,0),rgba(26,24,22,.6));opacity:0;transition:opacity .3s;z-index:1}
+.insta-tile::after{content:'';position:absolute;top:50%;left:50%;width:28px;height:28px;margin:-14px 0 0 -14px;background:no-repeat center/contain url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F9F5EE' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='2' width='20' height='20' rx='5'/><path d='M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z'/><line x1='17.5' y1='6.5' x2='17.51' y2='6.5'/></svg>");opacity:0;transition:opacity .3s;z-index:2}
+.insta-tile:hover::before,.insta-tile:hover::after{opacity:1}
+.insta-tile:hover img{transform:scale(1.08)}
+
+/* Amenities */
+.amenities{background:var(--ink);color:var(--cream);padding:3.5rem 3rem;position:relative;overflow:hidden}
+.amenities::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:200px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.amenities-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:1.5rem 2rem}
+.amenity{display:flex;align-items:center;gap:.7rem;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;opacity:.85;font-weight:500;transition:opacity .3s}
+.amenity:hover{opacity:1}
+.amenity-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;box-shadow:0 0 10px rgba(198,167,112,.6)}
+
+/* Highlights */
+.highlights{max-width:1200px;margin:0 auto}
+.highlights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem}
+.highlight-card{background:var(--cream);padding:3rem 2.2rem;border-radius:4px;transition:transform .5s,box-shadow .5s;position:relative;overflow:hidden;border:1px solid var(--line)}
+.highlight-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--gold),var(--accent));transform:scaleX(0);transform-origin:left;transition:transform .5s}
+.highlight-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.08)}
+.highlight-card:hover::before{transform:scaleX(1)}
+.highlight-number{font-family:'Fraunces',serif;font-style:italic;font-size:2.2rem;color:var(--gold);margin-bottom:1.2rem;font-weight:300;letter-spacing:-.02em}
+.highlight-card h4{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:400;margin-bottom:.8rem;color:var(--fg);letter-spacing:-.01em}
+.highlight-card p{font-size:.92rem;color:var(--fg-soft);line-height:1.7}
+
+/* Menu */
+.menu-section{background:var(--bg-2);position:relative;overflow:hidden}
+.menu-section::before{content:'';position:absolute;top:10%;right:-150px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,var(--warm),transparent);opacity:.5}
+.menu-inner{max-width:1200px;margin:0 auto;position:relative}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:3.5rem;margin-top:3.5rem}
+.menu-category h3{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:400;margin-bottom:1.8rem;padding-bottom:1rem;border-bottom:1px solid var(--accent);font-style:italic;color:var(--fg);display:flex;align-items:center;gap:.7rem}
+.menu-category h3 .menu-badge{font-family:'Inter',sans-serif;font-style:normal;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;padding:.25rem .6rem;background:var(--gold);color:var(--ink);border-radius:100px;font-weight:600}
+.menu-item{display:flex;justify-content:space-between;align-items:baseline;padding:.85rem 0;transition:padding-left .3s}
+.menu-item:hover{padding-left:.4rem}
+.menu-item-name{font-size:.95rem;font-weight:500;color:var(--fg)}
+.menu-item-desc{font-size:.78rem;color:var(--muted);margin-top:.25rem;font-weight:300}
+.menu-item-price{font-size:.9rem;color:var(--fg-soft);white-space:nowrap;margin-left:1rem;font-family:'Fraunces',serif}
 .menu-item-dots{flex:1;border-bottom:1px dotted var(--accent);margin:0 .8rem;min-width:20px;position:relative;top:-4px}
-.menu-note{text-align:center;margin-top:2rem;font-size:.82rem;color:var(--muted);font-style:italic}
-.reviews-section{background:var(--cream)}
-.reviews-inner{max-width:1100px;margin:0 auto}
-.reviews-stats{display:flex;align-items:center;gap:2rem;margin-top:2rem;margin-bottom:3rem;padding:2rem;background:var(--bg);border-radius:12px}
-.reviews-big-score{font-family:'DM Serif Display',serif;font-size:3.5rem;font-weight:400;line-height:1}
-.reviews-stars{color:var(--gold);font-size:1.1rem;letter-spacing:2px}
-.reviews-count{font-size:.82rem;color:var(--muted);margin-top:.3rem}
-.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
-.review-card{background:var(--bg);border-radius:12px;padding:2rem;transition:transform .3s}
-.review-card:hover{transform:translateY(-3px)}
-.review-card-stars{color:var(--gold);font-size:.85rem;letter-spacing:2px;margin-bottom:1rem}
-.review-card-text{font-size:.9rem;color:var(--fg);line-height:1.7;margin-bottom:1.2rem;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
-.review-card-author{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.review-card-source{font-size:.68rem;color:var(--accent);margin-top:.2rem}
-.faq{max-width:750px;margin:0 auto}
+.menu-note{text-align:center;margin-top:3rem;font-size:.82rem;color:var(--muted);font-style:italic;font-family:'Fraunces',serif}
+
+/* Reviews */
+.reviews-section{position:relative}
+.reviews-inner{max-width:1200px;margin:0 auto}
+.reviews-stats{display:flex;align-items:center;gap:2.5rem;margin:2.5rem auto 3.5rem;padding:2.5rem;background:var(--cream);border-radius:4px;max-width:700px;border:1px solid var(--line)}
+.reviews-big-score{font-family:'Fraunces',serif;font-size:4rem;font-weight:300;line-height:1;color:var(--fg);letter-spacing:-.03em}
+.reviews-big-score em{font-style:italic;color:var(--gold)}
+.reviews-stars{color:var(--gold);font-size:1.2rem;letter-spacing:3px}
+.reviews-count{font-size:.82rem;color:var(--muted);margin-top:.4rem;font-weight:400}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.2rem}
+.review-card{background:var(--cream);border-radius:4px;padding:2rem;transition:transform .4s,box-shadow .4s;border:1px solid var(--line);position:relative}
+.review-card:hover{transform:translateY(-4px);box-shadow:0 15px 40px rgba(0,0,0,.06)}
+.review-card-stars{color:var(--gold);font-size:.9rem;letter-spacing:2px;margin-bottom:1rem}
+.review-card-text{font-size:.92rem;color:var(--fg);line-height:1.75;margin-bottom:1.3rem;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;font-weight:300}
+.review-card-author{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fg);font-weight:500}
+.review-card-source{font-size:.68rem;color:var(--accent);margin-top:.25rem;letter-spacing:.08em;text-transform:uppercase}
+
+/* FAQ */
+.faq{max-width:800px;margin:0 auto}
 .faq-list{margin-top:3rem}
-.faq-item{border-bottom:1px solid var(--warm)}
-.faq-question{width:100%;background:none;border:none;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 0;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:400;color:var(--fg);cursor:pointer;text-align:left;line-height:1.5;transition:color .3s}
-.faq-question:hover{color:var(--muted)}
-.faq-icon{width:28px;height:28px;flex-shrink:0;border:1px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--muted);transition:transform .35s,background .35s;margin-left:1rem}
-.faq-item.open .faq-icon{transform:rotate(45deg);background:var(--fg);color:var(--bg);border-color:var(--fg)}
-.faq-answer{max-height:0;overflow:hidden;transition:max-height .4s ease}
-.faq-item.open .faq-answer{max-height:250px}
-.faq-answer p{padding:0 0 1.5rem;font-size:.9rem;color:var(--muted);line-height:1.8}
-.visit{max-width:1100px;margin:0 auto}
-.visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem;align-items:start}
-.visit-info h3{font-family:'DM Serif Display',serif;font-size:1.3rem;font-weight:400;margin-bottom:1.5rem}
-.visit-row{display:flex;justify-content:space-between;padding:.6rem 0;border-bottom:1px solid var(--warm);font-size:.88rem}
-.visit-row span:first-child{color:var(--muted)}
-.visit-row a{color:var(--fg);text-decoration:none}
-.visit-row a:hover{text-decoration:underline}
-.visit-map{width:100%;aspect-ratio:4/3;background:var(--warm);border-radius:12px;overflow:hidden}
-.visit-map iframe{width:100%;height:100%;border:0;filter:saturate(.3) contrast(.9)}
-.visit-social{display:flex;gap:1.2rem;margin-top:1.5rem}
-.social-link{display:flex;align-items:center;gap:.4rem;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .3s}
-.social-link:hover{color:var(--fg)}
-footer{text-align:center;padding:3rem 2rem;border-top:1px solid var(--warm)}
-footer .logo{font-size:1.1rem;display:inline-block;margin-bottom:1rem}
-footer p{font-size:.75rem;color:var(--muted);letter-spacing:.05em}
-footer .footer-links{margin-top:.8rem}
-footer .footer-links a{color:var(--accent);text-decoration:none;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;margin:0 .8rem;transition:color .3s}
-footer .footer-links a:hover{color:var(--fg)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes scrollPulse{0%,100%{opacity:.3}50%{opacity:1}}
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .6s,transform .6s}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-question{width:100%;background:none;border:none;display:flex;justify-content:space-between;align-items:center;padding:1.6rem 0;font-family:'Inter',sans-serif;font-size:1rem;font-weight:400;color:var(--fg);cursor:pointer;text-align:left;line-height:1.5;transition:color .3s}
+.faq-question:hover{color:var(--gold)}
+.faq-icon{width:30px;height:30px;flex-shrink:0;border:1px solid var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--muted);transition:transform .4s,background .4s,color .4s,border-color .4s;margin-left:1rem;font-weight:300}
+.faq-item.open .faq-icon{transform:rotate(45deg);background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .45s ease}
+.faq-item.open .faq-answer{max-height:260px}
+.faq-answer p{padding:0 0 1.6rem;font-size:.92rem;color:var(--fg-soft);line-height:1.8;max-width:90%}
+
+/* Visit */
+.visit-section{background:var(--bg-2)}
+.visit{max-width:1200px;margin:0 auto}
+.visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3.5rem;align-items:start}
+.visit-info h3{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:400;margin-bottom:1.8rem;font-style:italic;color:var(--fg)}
+.visit-row{display:flex;justify-content:space-between;padding:.8rem 0;border-bottom:1px solid var(--line);font-size:.92rem;gap:1rem}
+.visit-row span:first-child{color:var(--muted);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;font-weight:500;flex-shrink:0;min-width:110px;padding-top:.2rem}
+.visit-row span:last-child,.visit-row a{color:var(--fg);text-decoration:none;text-align:right;font-weight:400}
+.visit-row a:hover{color:var(--gold)}
+.visit-map{width:100%;aspect-ratio:4/3;background:var(--warm);border-radius:4px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.08)}
+.visit-map iframe{width:100%;height:100%;border:0;filter:saturate(.6) contrast(.95)}
+.visit-social{display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap}
+.social-link{display:inline-flex;align-items:center;gap:.5rem;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-soft);text-decoration:none;padding:.7rem 1.1rem;border:1px solid var(--line);border-radius:100px;transition:all .3s;font-weight:500;background:var(--cream)}
+.social-link:hover{border-color:var(--fg);color:var(--fg);transform:translateY(-2px)}
+.social-link svg{width:14px;height:14px}
+
+/* Lightbox */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(26,24,22,.95);z-index:300;align-items:center;justify-content:center;backdrop-filter:blur(10px);padding:2rem}
+.lightbox.open{display:flex}
+.lightbox-close{position:absolute;top:1.5rem;right:2rem;background:none;border:1px solid rgba(246,244,240,.3);color:var(--cream);width:44px;height:44px;border-radius:50%;font-size:1.4rem;cursor:pointer;opacity:.7;transition:all .3s;display:flex;align-items:center;justify-content:center;font-weight:300}
+.lightbox-close:hover{opacity:1;border-color:var(--cream);transform:rotate(90deg)}
+.lightbox-content{max-width:80vw;max-height:80vh;border-radius:4px;overflow:hidden}
+.lightbox-content img{width:100%;height:auto;max-height:80vh;object-fit:contain;display:block}
+
+/* Footer */
+footer{background:var(--ink);color:var(--cream);text-align:center;padding:4.5rem 2rem 3rem;position:relative;overflow:hidden}
+footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:80%;height:1px;background:linear-gradient(90deg,transparent,rgba(246,244,240,.2),transparent)}
+.footer-logo{display:inline-flex;flex-direction:column;align-items:center;gap:.05rem;margin-bottom:1.8rem;color:var(--cream);line-height:1}
+footer p{font-size:.78rem;color:rgba(246,244,240,.6);letter-spacing:.05em;margin-bottom:.4rem}
+.footer-links{margin-top:1.4rem;margin-bottom:2rem}
+.footer-links a{color:rgba(246,244,240,.75);text-decoration:none;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;margin:0 1rem;transition:color .3s;font-weight:500}
+.footer-links a:hover{color:var(--gold)}
+.footer-credit{font-size:.7rem;color:rgba(246,244,240,.35);letter-spacing:.1em;margin-top:2rem;padding-top:2rem;border-top:1px solid rgba(246,244,240,.08)}
+
+/* Reveal */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.25,.46,.45,.94),transform .8s cubic-bezier(.25,.46,.45,.94)}
 .reveal.visible{opacity:1;transform:translateY(0)}
+
+/* Responsive */
+@media(max-width:900px){
+  .about{grid-template-columns:1fr;gap:3rem}.about-quote{left:1rem;top:1rem}.about-img-small{right:-10px;bottom:-20px}
+  .highlights-grid{grid-template-columns:1fr}.visit-grid{grid-template-columns:1fr}
+  .amenities-inner{grid-template-columns:repeat(2,1fr)}
+  .insta-grid{grid-template-columns:repeat(3,1fr)}
+}
 @media(max-width:768px){
-nav{padding:1.2rem 1.5rem}.nav-links{display:none}.menu-toggle{display:block}
-.nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--bg);padding:1.5rem 2rem;border-bottom:1px solid var(--warm);gap:1.2rem}
-section{padding:4rem 1.5rem}.about{grid-template-columns:1fr;gap:2rem}.highlights-grid{grid-template-columns:1fr}
-.visit-grid{grid-template-columns:1fr}.menu-grid{grid-template-columns:1fr}
-.gallery-grid{grid-template-columns:1fr 1fr}.gallery-item:nth-child(1){grid-column:span 2;grid-row:span 1}
-.reviews-stats{flex-direction:column;text-align:center;gap:.8rem}.reviews-grid{grid-template-columns:1fr}
-.lightbox-content{min-width:85vw}.amenities-inner{justify-content:flex-start}
-}
-.busy-section {
-  padding: 5rem 3rem;
-  text-align: center;
-}
-
-.gauge-wrapper {
-  position: relative;
-  width: 160px;
-  height: 160px;
-  margin: 2rem auto;
-}
-
-.gauge {
-  transform: rotate(-90deg);
-}
-
-.gauge-bg {
-  fill: none;
-  stroke: #e8e2da;
-  stroke-width: 10;
-}
-
-.gauge-fill {
-  fill: none;
-  stroke: #2ecc71;
-  stroke-width: 10;
-  stroke-linecap: round;
-  stroke-dasharray: 326;
-  stroke-dashoffset: 326;
-  transition: 0.8s ease;
-}
-
-.gauge-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-}
-
-.high-glow {
-  animation: pulseGlow 1.2s infinite;
-}
-
-@keyframes pulseGlow {
-  0% { filter: drop-shadow(0 0 0 rgba(231,76,60,0.3)); }
-  50% { filter: drop-shadow(0 0 18px rgba(231,76,60,0.9)); }
-  100% { filter: drop-shadow(0 0 0 rgba(231,76,60,0.3)); }
-}
-.status-bar {
-  position: fixed;
-  top: 70px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 0.4rem 0;
-  background: rgba(246,244,240,0.85);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0,0,0,0.04);
-  color: var(--muted);
-  z-index: 99;
-}
-
-/* dot indicator */
-.status-open::before,
-.status-closed::before {
-  content: "● ";
-  margin-right: 4px;
-}
-
-.status-open {
-  color: #6f8f7a;
-}
-.status-open::before {
-  color: #6f8f7a;
-}
-
-.status-closed {
-  color: #b07a7a;
-}
-.status-closed::before {
-  color: #b07a7a;
+  nav{padding:1rem 1.3rem}.nav-links,.nav-cta{display:none}.menu-toggle{display:block}
+  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(243,239,232,.98);backdrop-filter:blur(16px);padding:1.5rem 2rem;border-bottom:1px solid var(--line);gap:1.4rem}
+  section{padding:5rem 1.3rem}.busy-section{padding:4rem 1.3rem}.menu-grid{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-auto-rows:180px}
+  .gallery-item:nth-child(1),.gallery-item:nth-child(6){grid-column:span 2}
+  .amenities-inner{grid-template-columns:1fr 1fr}
+  .reviews-stats{flex-direction:column;text-align:center;gap:1rem;padding:2rem 1.3rem}
+  .reviews-grid{grid-template-columns:1fr}
+  .insta-grid{grid-template-columns:repeat(3,1fr)}
+  .hero h1{font-size:clamp(2.8rem,13vw,5rem)}
+  .about-quote{display:none}
+  .about-img-small{display:none}
 }
 </style>
 </head>
 <body>
+
+<!-- Custom cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Navigation -->
 <nav id="nav">
-  <a href="#" class="logo">GREY</a>
+  <a href="#" class="logo" aria-label="GREY Café">
+    <span class="logo-word">GREY</span>
+    <span class="logo-sub">café</span>
+  </a>
   <ul class="nav-links" id="navLinks">
     <li><a href="#about">About</a></li>
     <li><a href="#gallery">Photos</a></li>
@@ -235,90 +331,159 @@ section{padding:4rem 1.5rem}.about{grid-template-columns:1fr;gap:2rem}.highlight
     <li><a href="#faq">FAQ</a></li>
     <li><a href="#visit">Visit</a></li>
   </ul>
+  <a href="https://www.seamless.com/menu/grey-cafe-19519-northern-blvd-flushing/1260383" target="_blank" class="nav-cta">Order</a>
   <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></button>
 </nav>
+
 <div id="statusBar" class="status-bar">
   <span id="statusText">Checking hours...</span>
 </div>
 
+<!-- Hero -->
 <section class="hero">
-  <div class="hero-badges">
-    <span class="hero-badge">Women-Owned</span>
-    <span class="hero-badge gold">Health Score: A</span>
-    <span class="hero-badge">Neighborhood Favorite</span>
+  <div class="hero-bg"><div class="hero-bg-img" id="heroBgImg"></div></div>
+  <div class="beans" id="beans"></div>
+  <svg class="steam" viewBox="0 0 80 140" aria-hidden="true">
+    <path d="M20 130 Q30 100 20 70 Q10 40 25 10"/>
+    <path d="M40 130 Q50 100 40 70 Q30 40 45 10"/>
+    <path d="M60 130 Q70 100 60 70 Q50 40 65 10"/>
+  </svg>
+  <svg class="steam right" viewBox="0 0 80 140" aria-hidden="true">
+    <path d="M20 130 Q30 100 20 70 Q10 40 25 10"/>
+    <path d="M40 130 Q50 100 40 70 Q30 40 45 10"/>
+    <path d="M60 130 Q70 100 60 70 Q50 40 65 10"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-badges">
+      <span class="hero-badge">Women-Owned</span>
+      <span class="hero-badge gold">Health Score · A</span>
+      <span class="hero-badge">Since 2019</span>
+    </div>
+    <div class="hero-eyebrow">Flushing · Queens · New York</div>
+    <h1>A <em>cozy</em> corner<br>for slow mornings.</h1>
+    <p class="hero-sub">Artisanal coffee, specialty teas & handcrafted bites — pulled from our La Marzocco in a calm, modern space on Northern Blvd.</p>
+    <div class="hero-cta">
+      <a href="#menu" class="btn btn-primary">
+        <span>View Menu</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+      <a href="https://www.seamless.com/menu/grey-cafe-19519-northern-blvd-flushing/1260383" target="_blank" class="btn btn-outline">Order Delivery</a>
+    </div>
   </div>
-  <h1>GREY Cafe</h1>
-  <p class="hero-sub">Artisanal coffee, specialty teas & handcrafted bites in a calm, modern space in the heart of Flushing, Queens.</p>
-  <div class="hero-cta">
-    <a href="#menu" class="btn btn-primary">View Menu</a>
-    <a href="https://www.seamless.com/menu/grey-cafe-19519-northern-blvd-flushing/1260383" target="_blank" class="btn btn-outline">Order Delivery</a>
+  <div class="scroll-hint">
+    <span class="scroll-label">Scroll</span>
+    <span class="scroll-line"></span>
   </div>
-  <div class="scroll-hint"><span></span></div>
 </section>
 
+<!-- Marquee -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Fair Trade <em>Organic</em></span>
+    <span>La Marzocco <em>Espresso</em></span>
+    <span>Plastic <em>Free</em></span>
+    <span>Too Good <em>To Go</em></span>
+    <span>Women <em>Owned</em></span>
+    <span>Open <em>Late</em></span>
+    <span>Fair Trade <em>Organic</em></span>
+    <span>La Marzocco <em>Espresso</em></span>
+    <span>Plastic <em>Free</em></span>
+    <span>Too Good <em>To Go</em></span>
+    <span>Women <em>Owned</em></span>
+    <span>Open <em>Late</em></span>
+  </div>
+</div>
+
+<!-- About -->
 <section id="about">
   <div class="about">
-    <div class="about-img"></div>
+    <div class="about-img-wrap reveal">
+      <div class="about-quote">A neighborhood gem in Flushing.</div>
+      <div class="about-img"></div>
+      <div class="about-img-small"></div>
+    </div>
     <div class="about-text reveal">
       <span class="section-label">Our Story</span>
-      <h2 class="section-title">A Cozy Corner<br>in Queens</h2>
+      <h2 class="section-title">A cozy corner<br>in <em>Queens.</em></h2>
       <p>GREY Cafe is a women-owned neighborhood spot — originally known as Browny — where you can slow down with a beautifully brewed cup from our La Marzocco machine, settle in with your laptop, or catch up with friends over freshly made sandwiches and pastries.</p>
-      <p>We care about sustainability, inclusivity, and doing things the right way — from plastic-free packaging and fair trade organic coffee to partnering with Too Good To Go to reduce food waste. Our space features gender-neutral restrooms, full wheelchair accessibility, and a post-it note wall where visitors leave messages.</p>
+      <p>We care about sustainability, inclusivity, and doing things the right way — from plastic-free packaging and fair-trade organic coffee to partnering with Too Good To Go. Our space features gender-neutral restrooms, full wheelchair accessibility, and a post-it note wall where visitors leave messages.</p>
       <div class="about-badges">
         <span class="about-tag">Fair Trade Organic</span>
-        <span class="about-tag">La Marzocco Espresso</span>
+        <span class="about-tag">La Marzocco</span>
         <span class="about-tag">Plastic-Free</span>
         <span class="about-tag">Too Good To Go</span>
       </div>
       <div class="about-stats">
-        <div><strong>4.6★</strong>960+ Reviews</div>
+        <div><strong>4.6<em style="color:var(--gold);font-style:normal">★</em></strong>960+ Reviews</div>
         <div><strong>A</strong>Health Score</div>
-        <div><strong>♿</strong>Accessible</div>
+        <div><strong>11<span style="font-size:1rem">pm</span></strong>Open Late</div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- Busy gauge -->
 <section class="busy-section reveal" id="busy">
   <div class="section-center">
     <span class="section-label">Live Insight</span>
-    <h2 class="section-title">Current Crowd Level</h2>
+    <h2 class="section-title">Current <em>crowd</em> level</h2>
   </div>
-
   <div class="gauge-wrapper">
-    <svg class="gauge" viewBox="0 0 120 120">
+    <svg class="gauge" viewBox="0 0 120 120" width="180" height="180">
       <circle class="gauge-bg" cx="60" cy="60" r="52"></circle>
       <circle class="gauge-fill" cx="60" cy="60" r="52" id="gaugeFill"></circle>
     </svg>
-
     <div class="gauge-center">
-      <div id="busyPercent">0%</div>
+      <div id="busyPercent">—</div>
       <div id="busyLabel">Loading</div>
     </div>
   </div>
+  <p style="font-size:.82rem;color:var(--muted);font-style:italic;font-family:'Fraunces',serif">Updated in real-time · based on time, weather & local activity</p>
 </section>
 
+<!-- Gallery -->
 <section id="gallery">
   <div class="gallery">
     <div class="section-center reveal">
       <span class="section-label">Inside GREY</span>
-      <h2 class="section-title">Our Space</h2>
+      <h2 class="section-title">Our <em>space</em>, in frames.</h2>
     </div>
     <div class="gallery-grid">
-      <div class="gallery-item" onclick="openLightbox(0)"><div class="gallery-placeholder"><span class="gp-icon">◎</span>Interior — Main Seating</div></div>
-      <div class="gallery-item" onclick="openLightbox(1)"><div class="gallery-placeholder"><span class="gp-icon">☕</span>Signature Drinks</div></div>
-      <div class="gallery-item" onclick="openLightbox(2)"><div class="gallery-placeholder"><span class="gp-icon">❋</span>Pastries & Macarons</div></div>
-      <div class="gallery-item" onclick="openLightbox(3)"><div class="gallery-placeholder"><span class="gp-icon">⌂</span>Outdoor Patio</div></div>
-      <div class="gallery-item" onclick="openLightbox(4)"><div class="gallery-placeholder"><span class="gp-icon">✎</span>Post-it Note Wall</div></div>
+      <div class="gallery-item reveal" onclick="openLightbox(0)">
+        <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=80" alt="Cafe interior" loading="lazy">
+        <div class="gallery-caption">Main Seating</div>
+      </div>
+      <div class="gallery-item reveal" onclick="openLightbox(1)">
+        <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80" alt="Latte" loading="lazy">
+        <div class="gallery-caption">Grey Foam Latte</div>
+      </div>
+      <div class="gallery-item reveal" onclick="openLightbox(2)">
+        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=800&q=80" alt="Pastries" loading="lazy">
+        <div class="gallery-caption">Macarons</div>
+      </div>
+      <div class="gallery-item reveal" onclick="openLightbox(3)">
+        <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=800&q=80" alt="Outdoor patio" loading="lazy">
+        <div class="gallery-caption">Outdoor Patio</div>
+      </div>
+      <div class="gallery-item reveal" onclick="openLightbox(4)">
+        <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80" alt="Pastry display" loading="lazy">
+        <div class="gallery-caption">Fresh Bakes</div>
+      </div>
+      <div class="gallery-item reveal" onclick="openLightbox(5)">
+        <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?auto=format&fit=crop&w=1200&q=80" alt="Cafe workspace" loading="lazy">
+        <div class="gallery-caption">Work & Study</div>
+      </div>
     </div>
   </div>
 </section>
 
 <div class="lightbox" id="lightbox">
-  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">×</button>
   <div class="lightbox-content" id="lightboxContent"></div>
 </div>
 
+<!-- Amenities strip -->
 <div class="amenities">
   <div class="amenities-inner">
     <div class="amenity"><span class="amenity-dot"></span>Free Wi-Fi</div>
@@ -334,29 +499,43 @@ section{padding:4rem 1.5rem}.about{grid-template-columns:1fr;gap:2rem}.highlight
   </div>
 </div>
 
+<!-- Highlights -->
 <section>
   <div class="highlights">
     <div class="section-center reveal">
       <span class="section-label">Why GREY</span>
-      <h2 class="section-title">Made for Lingering</h2>
+      <h2 class="section-title">Made for <em>lingering.</em></h2>
     </div>
     <div class="highlights-grid">
-      <div class="highlight-card reveal"><div class="highlight-icon">◎</div><h4>Signature Drinks</h4><p>From our Grey Foam Latte with house-made black sesame foam to the slow-dripped Kyoto Cold Brew — every cup is pulled from our La Marzocco machine with care.</p></div>
-      <div class="highlight-card reveal"><div class="highlight-icon">◐</div><h4>Work & Study</h4><p>Fast Wi-Fi, plenty of outlets along the perimeter, ample seating across multiple rooms, and a calm atmosphere open until 11pm most days.</p></div>
-      <div class="highlight-card reveal"><div class="highlight-icon">◑</div><h4>Inclusive Space</h4><p>Full wheelchair accessibility, gender-neutral restrooms, a kids' menu, covered outdoor patios with heaters, and a diverse, welcoming crowd.</p></div>
+      <div class="highlight-card reveal">
+        <div class="highlight-number">01</div>
+        <h4>Signature Drinks</h4>
+        <p>From our Grey Foam Latte with house-made black sesame foam to the slow-dripped Kyoto Cold Brew — every cup is pulled from our La Marzocco with care.</p>
+      </div>
+      <div class="highlight-card reveal">
+        <div class="highlight-number">02</div>
+        <h4>Work & Study</h4>
+        <p>Fast Wi-Fi, outlets along the perimeter, ample seating across multiple rooms, and a calm atmosphere open until 11pm most nights.</p>
+      </div>
+      <div class="highlight-card reveal">
+        <div class="highlight-number">03</div>
+        <h4>Inclusive Space</h4>
+        <p>Full wheelchair accessibility, gender-neutral restrooms, a kids' menu, covered outdoor patios with heaters, and a warm, welcoming crowd.</p>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- Menu -->
 <section id="menu" class="menu-section">
   <div class="menu-inner">
     <div class="section-center reveal">
       <span class="section-label">Our Menu</span>
-      <h2 class="section-title">Coffee, Tea & Bites</h2>
+      <h2 class="section-title">Coffee, tea<br>& handcrafted <em>bites.</em></h2>
     </div>
     <div class="menu-grid">
       <div class="menu-category reveal">
-        <h3>Signature Drinks</h3>
+        <h3>Signature <span class="menu-badge">Must Try</span></h3>
         <div class="menu-item"><div><div class="menu-item-name">Grey Foam Latte</div><div class="menu-item-desc">Black sesame foam, espresso</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$7.50</span></div>
         <div class="menu-item"><div><div class="menu-item-name">Kyoto Cold Brew</div><div class="menu-item-desc">Slow-dripped, limited daily</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$6.50</span></div>
         <div class="menu-item"><div><div class="menu-item-name">Misugaru Latte</div><div class="menu-item-desc">Nutty, malty, rich</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$6.50</span></div>
@@ -365,7 +544,7 @@ section{padding:4rem 1.5rem}.about{grid-template-columns:1fr;gap:2rem}.highlight
         <div class="menu-item"><div><div class="menu-item-name">Affogato</div><div class="menu-item-desc">Espresso over vanilla gelato</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$7.00</span></div>
       </div>
       <div class="menu-category reveal">
-        <h3>Classics & Tea</h3>
+        <h3>Classics &amp; Tea</h3>
         <div class="menu-item"><div><div class="menu-item-name">Hazelnut Oat Latte</div><div class="menu-item-desc">Fan favorite, oat milk</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$6.50</span></div>
         <div class="menu-item"><div><div class="menu-item-name">Matcha Latte</div><div class="menu-item-desc">Premium grade matcha</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$6.50</span></div>
         <div class="menu-item"><div><div class="menu-item-name">Strawberry Matcha</div><div class="menu-item-desc">Matcha with strawberry swirl</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$7.00</span></div>
@@ -375,41 +554,67 @@ section{padding:4rem 1.5rem}.about{grid-template-columns:1fr;gap:2rem}.highlight
         <div class="menu-item"><div><div class="menu-item-name">Grapefruit Ade</div><div class="menu-item-desc">Bright, tangy, refreshing</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$5.50</span></div>
       </div>
       <div class="menu-category reveal">
-        <h3>Food & Treats</h3>
-        <div class="menu-item"><div><div class="menu-item-name">Acai Bowl</div><div class="menu-item-desc">Fresh fruit, granola, overnight oats</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$12.00</span></div>
-        <div class="menu-item"><div><div class="menu-item-name">Focaccia Turkey Sandwich</div><div class="menu-item-desc">Swiss cheese, pesto, homemade bread</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$11.00</span></div>
-        <div class="menu-item"><div><div class="menu-item-name">Focaccia Ham Sandwich</div><div class="menu-item-desc">Swiss cheese, pesto, homemade bread</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$11.00</span></div>
+        <h3>Food &amp; Treats</h3>
+        <div class="menu-item"><div><div class="menu-item-name">Acai Bowl</div><div class="menu-item-desc">Fresh fruit, granola, oats</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$12.00</span></div>
+        <div class="menu-item"><div><div class="menu-item-name">Turkey Focaccia</div><div class="menu-item-desc">Swiss, pesto, homemade bread</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$11.00</span></div>
+        <div class="menu-item"><div><div class="menu-item-name">Ham Focaccia</div><div class="menu-item-desc">Swiss, pesto, homemade bread</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$11.00</span></div>
         <div class="menu-item"><div><div class="menu-item-name">Everything Bagel</div><div class="menu-item-desc">Chive cream cheese</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$6.50</span></div>
-        <div class="menu-item"><div><div class="menu-item-name">PB&J on Brioche</div><div class="menu-item-desc">Creamy PB, fruit jams</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$5.00</span></div>
+        <div class="menu-item"><div><div class="menu-item-name">PB&amp;J on Brioche</div><div class="menu-item-desc">Creamy PB, fruit jams</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$5.00</span></div>
         <div class="menu-item"><div><div class="menu-item-name">Almond Croissant</div><div class="menu-item-desc">Light, crispy on top</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$5.50</span></div>
         <div class="menu-item"><div><div class="menu-item-name">Earl Grey Pudding</div><div class="menu-item-desc">House cold-brewed extract</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$8.50</span></div>
         <div class="menu-item"><div><div class="menu-item-name">Tiramisu Pudding</div><div class="menu-item-desc">Creamy, coffee-infused</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$8.50</span></div>
         <div class="menu-item"><div><div class="menu-item-name">Monkey Bread</div><div class="menu-item-desc">Pull-apart, cinnamon sugar</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$6.50</span></div>
-        <div class="menu-item"><div><div class="menu-item-name">Macarons (6pc)</div><div class="menu-item-desc">Hazelnut, lavender & more</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$18.00</span></div>
+        <div class="menu-item"><div><div class="menu-item-name">Macarons (6pc)</div><div class="menu-item-desc">Hazelnut, lavender &amp; more</div></div><span class="menu-item-dots"></span><span class="menu-item-price">$18.00</span></div>
       </div>
     </div>
-    <p class="menu-note">Prices are approximate. Oat, almond, coconut & other milk alternatives available. Ask about daily specials.</p>
+    <p class="menu-note">Oat, almond, coconut &amp; other milk alternatives available · Ask about daily specials</p>
   </div>
 </section>
 
+<!-- Instagram -->
+<section class="insta-section reveal" id="instagram">
+  <div class="insta-inner">
+    <div class="insta-header">
+      <div>
+        <span class="section-label">Follow Along</span>
+        <h2 class="section-title" style="margin-bottom:.5rem">On <em>Instagram</em></h2>
+        <a href="https://www.instagram.com/greycafeny/" target="_blank" class="insta-handle">@greycafeny</a>
+      </div>
+      <a href="https://www.instagram.com/greycafeny/" target="_blank" class="btn btn-dark">
+        <span>Follow Us</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+    </div>
+    <div class="insta-grid">
+      <a href="https://www.instagram.com/greycafeny/" target="_blank" class="insta-tile"><img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=500&q=80" alt="" loading="lazy"></a>
+      <a href="https://www.instagram.com/greycafeny/" target="_blank" class="insta-tile"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=500&q=80" alt="" loading="lazy"></a>
+      <a href="https://www.instagram.com/greycafeny/" target="_blank" class="insta-tile"><img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=500&q=80" alt="" loading="lazy"></a>
+      <a href="https://www.instagram.com/greycafeny/" target="_blank" class="insta-tile"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=500&q=80" alt="" loading="lazy"></a>
+      <a href="https://www.instagram.com/greycafeny/" target="_blank" class="insta-tile"><img src="https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=500&q=80" alt="" loading="lazy"></a>
+      <a href="https://www.instagram.com/greycafeny/" target="_blank" class="insta-tile"><img src="https://images.unsplash.com/photo-1485808191679-5f86510681a2?auto=format&fit=crop&w=500&q=80" alt="" loading="lazy"></a>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
 <section id="reviews" class="reviews-section">
   <div class="reviews-inner">
     <div class="section-center reveal">
       <span class="section-label">What People Say</span>
-      <h2 class="section-title">Guest Reviews</h2>
+      <h2 class="section-title">Guest <em>reviews.</em></h2>
     </div>
     <div class="reviews-stats reveal">
-      <div class="reviews-big-score">4.6</div>
+      <div class="reviews-big-score">4.<em>6</em></div>
       <div>
         <div class="reviews-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <div class="reviews-count">Based on 960+ reviews across Google, Yelp & more</div>
+        <div class="reviews-count">Based on 960+ reviews across Google, Yelp &amp; more</div>
       </div>
     </div>
     <div class="reviews-grid">
       <div class="review-card reveal"><div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-card-text">THE cutest cafe I've ever been to in the heart of Queens! 13 out of 10 for cafe vibes and service. If you're looking for a spot to be productive and socialize, this is the perfect place.</p><div class="review-card-author">Kendrice R.</div><div class="review-card-source">Yelp</div></div>
       <div class="review-card reveal"><div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-card-text">A true community staple! The owner once approached me in the outdoor area and started a conversation about how him and his wife started Grey. Fast wi-fi, plenty of outlets. A neighborhood gem.</p><div class="review-card-author">May TV</div><div class="review-card-source">Google</div></div>
-      <div class="review-card reveal"><div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-card-text">My anxiousness washes away when I'm here. A beautiful space with delicious drinks and treats accompanied by the rhythmic melodies of life in a cafe. I hope others will find a place as charming as this one.</p><div class="review-card-author">Something Something</div><div class="review-card-source">Google</div></div>
-      <div class="review-card reveal"><div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-card-text">The diversity of people jumped out at me. Laptops, friends, all backgrounds. The matcha latte with coconut milk was clump-free and perfect. Health conscious brands throughout. 9.5/10 all around.</p><div class="review-card-author">Charles E.</div><div class="review-card-source">Google</div></div>
+      <div class="review-card reveal"><div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-card-text">My anxiousness washes away when I'm here. A beautiful space with delicious drinks and treats accompanied by the rhythmic melodies of life in a cafe. I hope others will find a place as charming as this.</p><div class="review-card-author">Something Something</div><div class="review-card-source">Google</div></div>
+      <div class="review-card reveal"><div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-card-text">The diversity of people jumped out at me. Laptops, friends, all backgrounds. The matcha latte with coconut milk was clump-free and perfect. Health-conscious brands throughout. 9.5/10 all around.</p><div class="review-card-author">Charles E.</div><div class="review-card-source">Google</div></div>
       <div class="review-card reveal"><div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-card-text">Yesterday was my first time going to GREY. They had an adorable section where you can leave a post-it note. They were also very accommodating and cut the crust off my sandwich. Will definitely be back!</p><div class="review-card-author">Amy</div><div class="review-card-source">Google</div></div>
       <div class="review-card reveal"><div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-card-text">I usually only come to grab a drink and go, but would love to try studying here. The cafe is always filled with diligent students — the environment would actually motivate me. The grey foam latte with oat milk is the best!</p><div class="review-card-author">Pamela D.V.</div><div class="review-card-source">Google</div></div>
       <div class="review-card reveal"><div class="review-card-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-card-text">The absolute best, always. It feels good having a trustable cafe you can rely on for a perfect pick me up even on stressful days. The iced oat maple latte combo is heaven on earth.</p><div class="review-card-author">Loyal Customer</div><div class="review-card-source">DoorDash</div></div>
@@ -419,240 +624,214 @@ section{padding:4rem 1.5rem}.about{grid-template-columns:1fr;gap:2rem}.highlight
   </div>
 </section>
 
+<!-- FAQ -->
 <section id="faq">
   <div class="faq">
     <div class="section-center reveal">
       <span class="section-label">Common Questions</span>
-      <h2 class="section-title">FAQ</h2>
+      <h2 class="section-title"><em>FAQ.</em></h2>
     </div>
     <div class="faq-list reveal">
       <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Is GREY Cafe dog-friendly?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Dogs are welcome in our outdoor seating areas. We have two covered patio sections — perfect for hanging out with your pup.</p></div></div>
-      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Do you offer alternative milk options?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes! We offer oat milk, almond milk, coconut milk, and other alternatives. Many signature drinks like the hazelnut latte are best with oat milk.</p></div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Do you offer alternative milk options?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes! We offer oat, almond, coconut, and other alternatives. Many signature drinks like the hazelnut latte are best with oat milk.</p></div></div>
       <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Is there Wi-Fi and are there outlets?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Free, fast Wi-Fi throughout the cafe. Outlets are available along the perimeter of the main seating area — great for studying or remote work.</p></div></div>
       <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">What payment methods do you accept?<span class="faq-icon">+</span></button><div class="faq-answer"><p>We accept cash, credit cards, debit cards, and NFC mobile payments (Apple Pay, Google Pay, etc.).</p></div></div>
       <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Do you take reservations?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes, we accept reservations. We also have a designated section for groups of 4 or more. For larger parties or catering, contact us directly.</p></div></div>
-      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Do you offer delivery?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes — order through DoorDash, Seamless, Grubhub, or UberEats for delivery. We also offer takeout and catering for events.</p></div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Do you offer delivery?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes — order through DoorDash, Seamless, Grubhub, or UberEats. We also offer takeout and catering for events.</p></div></div>
       <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Is the cafe wheelchair accessible?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Fully wheelchair accessible — entrance, seating, parking, and restrooms. We also have gender-neutral restrooms available for all guests.</p></div></div>
-      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Do you have vegan and vegetarian options?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes! We offer vegan and vegetarian food options, plant-based milks, and organic dishes. We use health-conscious brands throughout our menu.</p></div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Do you have vegan and vegetarian options?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes! We offer vegan and vegetarian food options, plant-based milks, and organic dishes.</p></div></div>
       <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Do you serve alcohol?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Yes, we offer beer, wine, and happy-hour drinks alongside our full coffee and tea menu.</p></div></div>
-      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">When is the best time to visit for a quiet atmosphere?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Weekday mornings and early afternoons are quieter. Evenings and weekends tend to be busier — noise-canceling headphones recommended for focused work.</p></div></div>
-      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Is GREY Cafe family-friendly?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Absolutely! We're family-friendly with a kids' menu available. Our space welcomes groups, tourists, solo diners, and families alike.</p></div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">When is it quietest for focused work?<span class="faq-icon">+</span></button><div class="faq-answer"><p>Weekday mornings and early afternoons are quieter. Evenings and weekends tend to be busier — noise-cancelling headphones recommended.</p></div></div>
     </div>
   </div>
 </section>
 
-<section id="visit">
+<!-- Visit -->
+<section id="visit" class="visit-section">
   <div class="visit">
     <div class="section-center reveal">
       <span class="section-label">Come Say Hi</span>
-      <h2 class="section-title">Visit GREY</h2>
+      <h2 class="section-title">Visit <em>GREY.</em></h2>
     </div>
     <div class="visit-grid">
       <div class="visit-info reveal">
-        <h3>Hours & Details</h3>
-        <div class="visit-row"><span>Address</span><span>195-19 Northern Blvd, Flushing, NY 11358</span></div>
-        <div class="visit-row"><span>Phone</span><span>(718) 229-2342</span></div>
-        <div class="visit-row"><span>Email</span><span>greycafeny@gmail.com</span></div>
+        <h3>Hours &amp; Details</h3>
+        <div class="visit-row"><span>Address</span><span>195-19 Northern Blvd<br>Flushing, NY 11358</span></div>
+        <div class="visit-row"><span>Phone</span><a href="tel:+17182292342">(718) 229-2342</a></div>
+        <div class="visit-row"><span>Email</span><a href="mailto:greycafeny@gmail.com">greycafeny@gmail.com</a></div>
         <div class="visit-row"><span>Mon–Tue</span><span>8:00 AM — 11:00 PM</span></div>
         <div class="visit-row"><span>Wed</span><span>8:00 AM — 8:00 PM</span></div>
         <div class="visit-row"><span>Thu</span><span>9:00 AM — 9:00 PM</span></div>
         <div class="visit-row"><span>Fri–Sun</span><span>8:00 AM — 11:00 PM</span></div>
-        <div class="visit-row"><span>Parking</span><span>Free & Paid Street Parking</span></div>
-        <div class="visit-row"><span>Website</span><span><a href="https://greycafe.shop" target="_blank">greycafe.shop</a></span></div>
-        <a href="https://maps.google.com/?q=GREY+Cafe+195-19+Northern+Blvd+Flushing+NY+11358" target="_blank" class="btn btn-primary" style="margin-top:2rem">Get Directions</a>
+        <div class="visit-row"><span>Parking</span><span>Free &amp; paid street parking</span></div>
+        <a href="https://maps.google.com/?q=GREY+Cafe+195-19+Northern+Blvd+Flushing+NY+11358" target="_blank" class="btn btn-dark" style="margin-top:2rem">
+          <span>Get Directions</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
         <div class="visit-social">
-          <a href="https://www.instagram.com/greycafeny/" target="_blank" class="social-link">&#9679; Instagram</a>
-          <a href="https://www.facebook.com/greycafeny/" target="_blank" class="social-link">&#9679; Facebook</a>
-          <a href="https://www.yelp.com/biz/grey-cafe-flushing" target="_blank" class="social-link">&#9679; Yelp</a>
+          <a href="https://www.instagram.com/greycafeny/" target="_blank" class="social-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            Instagram
+          </a>
+          <a href="https://www.facebook.com/greycafeny/" target="_blank" class="social-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            Facebook
+          </a>
+          <a href="https://www.yelp.com/biz/grey-cafe-flushing" target="_blank" class="social-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C7 2 4 5 4 10v8c0 2 1 3 3 3h10c2 0 3-1 3-3v-8c0-5-3-8-8-8z" opacity=".2"/><circle cx="12" cy="12" r="3"/></svg>
+            Yelp
+          </a>
         </div>
       </div>
       <div class="visit-map reveal">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.7!2d-73.7860161!3d40.7581727!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c261a587beff29%3A0x46f378dda4d8f9c!2sGREY%20Cafe!5e0!3m2!1sen!2sus!4v1" allowfullscreen loading="lazy"></iframe>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.7!2d-73.7860161!3d40.7581727!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c261a587beff29%3A0x46f378dda4d8f9c!2sGREY%20Cafe!5e0!3m2!1sen!2sus!4v1" allowfullscreen loading="lazy" title="GREY Cafe location"></iframe>
       </div>
     </div>
   </div>
 </section>
 
 <footer>
-  <a href="#" class="logo">GREY</a>
-  <p>&copy; 2026 GREY Cafe &middot; 195-19 Northern Blvd, Flushing, Queens &middot; Women-Owned</p>
+  <a href="#" class="footer-logo logo" aria-label="GREY Café">
+    <span class="logo-word" style="font-size:2.2rem">GREY</span>
+    <span class="logo-sub" style="font-size:.7rem;color:rgba(246,244,240,.5)">café</span>
+  </a>
+  <p>195-19 Northern Blvd · Flushing, Queens · NY 11358</p>
+  <p>(718) 229-2342 · greycafeny@gmail.com</p>
   <div class="footer-links">
     <a href="https://www.instagram.com/greycafeny/" target="_blank">Instagram</a>
     <a href="https://www.facebook.com/greycafeny/" target="_blank">Facebook</a>
     <a href="https://greycafe.shop" target="_blank">Shop</a>
     <a href="https://www.seamless.com/menu/grey-cafe-19519-northern-blvd-flushing/1260383" target="_blank">Order Online</a>
   </div>
+  <p class="footer-credit">© 2026 GREY Cafe · Women-Owned · Made with care in Queens</p>
 </footer>
 
 <script>
+// Nav scroll
 window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)});
+
+// Reveal on scroll
 const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.target.classList.add('visible');obs.unobserve(el.target)}})},{threshold:.1});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-function toggleFaq(btn){const item=btn.parentElement;const wasOpen=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!wasOpen)item.classList.add('open')}
-const labels=['Interior — Main Seating','Signature Drinks','Pastries & Macarons','Outdoor Patio','Post-it Note Wall'];
-const icons=['&#9678;','&#9749;','&#10043;','&#8962;','&#9998;'];
-function openLightbox(i){document.getElementById('lightboxContent').innerHTML='<div class="gallery-placeholder"><span class="gp-icon" style="font-size:3rem">'+icons[i]+'</span><span>'+labels[i]+'</span><span style="margin-top:.5rem;font-size:.65rem;opacity:.5">Replace with your photo</span></div>';document.getElementById('lightbox').classList.add('open')}
+
+// FAQ
+function toggleFaq(btn){
+  const item=btn.parentElement;
+  const wasOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen)item.classList.add('open');
+}
+
+// Lightbox
+const galleryImgs=[
+  'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1600&q=85',
+  'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1600&q=85',
+  'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=1600&q=85',
+  'https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=1600&q=85',
+  'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1600&q=85',
+  'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?auto=format&fit=crop&w=1600&q=85'
+];
+function openLightbox(i){
+  document.getElementById('lightboxContent').innerHTML='<img src="'+galleryImgs[i]+'" alt="">';
+  document.getElementById('lightbox').classList.add('open');
+}
 function closeLightbox(){document.getElementById('lightbox').classList.remove('open')}
 document.getElementById('lightbox').addEventListener('click',e=>{if(e.target.id==='lightbox')closeLightbox()});
-function getStoreStatus() {
-  const now = new Date();
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox()});
 
-  const day = now.getDay(); // 0 = Sunday
-  const currentMinutes = now.getHours() * 60 + now.getMinutes();
-
-  // Store hours in minutes
-  const schedule = {
-    0: { open: 8 * 60, close: 23 * 60 }, // Sun
-    1: { open: 8 * 60, close: 23 * 60 }, // Mon
-    2: { open: 8 * 60, close: 23 * 60 }, // Tue
-    3: { open: 8 * 60, close: 20 * 60 }, // Wed
-    4: { open: 9 * 60, close: 21 * 60 }, // Thu
-    5: { open: 8 * 60, close: 23 * 60 }, // Fri
-    6: { open: 8 * 60, close: 23 * 60 }  // Sat
-  };
-
-  const today = schedule[day];
-  const statusText = document.getElementById("statusText");
-
-  function formatTime(minutes) {
-    const h = Math.floor(minutes / 60);
-    const m = minutes % 60;
-    const ampm = h >= 12 ? "PM" : "AM";
-    const hour = h % 12 || 12;
-    return `${hour}:${m.toString().padStart(2, "0")} ${ampm}`;
+// Parallax hero
+const heroBgImg=document.getElementById('heroBgImg');
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  if(y<window.innerHeight&&heroBgImg){
+    heroBgImg.style.transform='translateY('+(y*.35)+'px) scale(1.05)';
   }
+},{passive:true});
 
-  if (currentMinutes >= today.open && currentMinutes < today.close) {
-    statusText.textContent = `Open now · closes at ${formatTime(today.close)}`;
-    statusText.className = "status-open";
-  } else {
-    statusText.textContent = `Closed · opens at ${formatTime(today.open)}`;
-    statusText.className = "status-closed";
-  }
+// Floating beans
+const beansContainer=document.getElementById('beans');
+for(let i=0;i<14;i++){
+  const b=document.createElement('span');
+  b.className='bean';
+  b.style.left=(Math.random()*100)+'%';
+  b.style.animationDuration=(15+Math.random()*20)+'s';
+  b.style.animationDelay=(-Math.random()*20)+'s';
+  b.style.transform='scale('+(.5+Math.random()*.8)+')';
+  b.style.opacity=(.08+Math.random()*.15);
+  beansContainer.appendChild(b);
 }
 
-// Run on load
+// Custom cursor (desktop only)
+if(window.matchMedia('(hover:hover)').matches){
+  const dot=document.getElementById('cursorDot');
+  const ring=document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    dot.style.transform='translate('+mx+'px,'+my+'px) translate(-50%,-50%)';
+    document.body.classList.add('cursor-ready');
+  });
+  (function raf(){
+    rx+=(mx-rx)*.18;ry+=(my-ry)*.18;
+    ring.style.transform='translate('+rx+'px,'+ry+'px) translate(-50%,-50%)';
+    requestAnimationFrame(raf);
+  })();
+  document.querySelectorAll('a,button,.gallery-item,.insta-tile').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='56px';ring.style.height='56px'});
+    el.addEventListener('mouseleave',()=>{ring.style.width='34px';ring.style.height='34px'});
+  });
+}
+
+// Store status
+function getStoreStatus(){
+  const now=new Date();
+  const day=now.getDay();
+  const m=now.getHours()*60+now.getMinutes();
+  const sched={0:{o:480,c:1380},1:{o:480,c:1380},2:{o:480,c:1380},3:{o:480,c:1200},4:{o:540,c:1260},5:{o:480,c:1380},6:{o:480,c:1380}};
+  const t=sched[day];
+  const el=document.getElementById('statusText');
+  const fmt=x=>{const h=Math.floor(x/60),mm=x%60,ap=h>=12?'PM':'AM',hh=h%12||12;return hh+':'+mm.toString().padStart(2,'0')+' '+ap};
+  if(m>=t.o&&m<t.c){el.textContent='Open now · closes at '+fmt(t.c);el.className='status-open'}
+  else{el.textContent='Closed · opens at '+fmt(t.o);el.className='status-closed'}
+}
 getStoreStatus();
+setInterval(getStoreStatus,60000);
 
-// Optional: update every minute
-setInterval(getStoreStatus, 60000);
+// Crowd gauge (heuristic — works without API keys)
+const circle=document.getElementById('gaugeFill');
+const pct=document.getElementById('busyPercent');
+const lbl=document.getElementById('busyLabel');
+const circumference=2*Math.PI*52;
+circle.style.strokeDasharray=circumference;
 
-const WEATHER_API_KEY = "YOUR_OPENWEATHER_KEY";
-const GOOGLE_API_KEY = "YOUR_GOOGLE_KEY";
-
-let weatherFactor = 0;
-let trafficFactor = 0;
-
-async function fetchWeather() {
-  try {
-    const res = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=Flushing&appid=${WEATHER_API_KEY}&units=imperial`
-    );
-
-    const data = await res.json();
-
-    const condition = data.weather[0].main.toLowerCase();
-    const temp = data.main.temp;
-
-    weatherFactor = 0;
-
-    if (condition.includes("rain") || condition.includes("snow")) {
-      weatherFactor += 25;
-    }
-
-    if (temp > 85) weatherFactor -= 10;
-    if (temp < 40) weatherFactor += 10;
-
-  } catch (e) {
-    console.log(e);
-  }
+function setBusy(level){
+  const offset=circumference-(level/100)*circumference;
+  circle.style.strokeDashoffset=offset;
+  pct.textContent=level+'%';
+  let text='Quiet',col='#5d8a6e';
+  circle.classList.remove('high-glow');
+  if(level>75){text='Very Busy';col='#b8785a';circle.classList.add('high-glow')}
+  else if(level>50){text='Moderate';col='#c6a770'}
+  else if(level>25){text='Light';col='#8ba97f'}
+  circle.style.stroke=col;
+  lbl.textContent=text;
 }
 
-async function fetchFootTraffic() {
-  try {
-    const res = await fetch(
-      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.7580,-73.8200&radius=800&type=cafe&key=${GOOGLE_API_KEY}`
-    );
-
-    const data = await res.json();
-    const results = data.results || [];
-
-    let total = 0;
-    results.forEach(p => {
-      total += p.user_ratings_total || 0;
-    });
-
-    trafficFactor = Math.min(30, total / 2000);
-
-  } catch (e) {
-    console.log(e);
-  }
+function estimateCrowd(){
+  const now=new Date();
+  const h=now.getHours(),d=now.getDay();
+  let base=15;
+  if(h>=12&&h<=14)base+=32;
+  if(h>=17&&h<=20)base+=42;
+  if(h>=8&&h<=10)base+=12;
+  if(h<8||h>=22)base=Math.max(5,base-10);
+  if(d===0||d===6)base+=15;
+  base+=Math.random()*8;
+  return Math.min(100,Math.max(5,Math.floor(base)));
 }
 
-function estimateCrowdAI() {
-  const now = new Date();
-  const hour = now.getHours();
-  const day = now.getDay();
-
-  let base = 15;
-
-  // rush hours
-  if (hour >= 12 && hour <= 14) base += 35;
-  if (hour >= 17 && hour <= 20) base += 45;
-  if (hour >= 8 && hour <= 10) base += 10;
-
-  // weekend boost
-  if (day === 0 || day === 6) base += 15;
-
-  base += weatherFactor;
-  base += trafficFactor;
-
-  base += Math.random() * 10;
-
-  return Math.min(100, Math.max(0, Math.floor(base)));
-}
-
-const circle = document.getElementById("gaugeFill");
-const percentText = document.getElementById("busyPercent");
-const label = document.getElementById("busyLabel");
-
-const radius = 52;
-const circumference = 2 * Math.PI * radius;
-
-function setBusy(level) {
-  const offset = circumference - (level / 100) * circumference;
-
-  circle.style.strokeDasharray = circumference;
-  circle.style.strokeDashoffset = offset;
-
-  percentText.textContent = `${level}%`;
-
-  let text = "Quiet";
-  circle.classList.remove("high-glow");
-
-  if (level > 75) {
-    text = "Very Busy";
-    circle.classList.add("high-glow");
-  } else if (level > 50) {
-    text = "Moderate";
-  } else if (level > 25) {
-    text = "Light";
-  }
-
-  label.textContent = text;
-}
-
-async function refreshAI() {
-  await fetchWeather();
-  await fetchFootTraffic();
-
-  const predicted = estimateCrowdAI();
-  setBusy(predicted);
-}
-
-refreshAI();
-setInterval(refreshAI, 600000); // every 10 min
-
+setTimeout(()=>setBusy(estimateCrowd()),400);
+setInterval(()=>setBusy(estimateCrowd()),600000);
 </script>
 </body>
 </html>
